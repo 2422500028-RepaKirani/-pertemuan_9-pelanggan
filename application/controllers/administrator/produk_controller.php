@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Produk_controller extends CI_Controller
 {
 
-  public function __construct() {
+    public function __construct() {
         parent::__construct();
         is_admin_logged_in();
         $this->load->model('produk_model');
@@ -24,18 +24,18 @@ class Produk_controller extends CI_Controller
 
     public function tambah_produk()
     {
-      $data['title'] = 'Tambah Produk';
-      $this->form_validation->set_rules('nama_produk', 'Nama Produk', 'required');
-      $this->form_validation->set_rules('kategori_produk', 'Kategori', 'required');
-      if ($this->form_validation->run() !== FALSE) {
-        $this->__simpan_produk();
-      } else {
-        $data['list_kategori'] = $this->produk_kategori_model->get_all();
-        $this->load->view('administrator/templates/header', $data);
-        $this->load->view('administrator/templates/sidebar');
-        $this->load->view('administrator/produk/tambah_produk', $data);
-        $this->load->view('administrator/templates/footer');
-      }
+        $data['title'] = 'Tambah Produk';
+        $this->form_validation->set_rules('nama_produk', 'Nama Produk', 'required');
+        $this->form_validation->set_rules('kategori_produk', 'Kategori', 'required');
+        if ($this->form_validation->run() !== FALSE) {
+            $this->__simpan_produk();
+        } else {
+            $data['list_kategori'] = $this->produk_kategori_model->get_all();
+            $this->load->view('administrator/templates/header', $data);
+            $this->load->view('administrator/templates/sidebar');
+            $this->load->view('administrator/produk/tambah_produk', $data);
+            $this->load->view('administrator/templates/footer');
+        }
     }
 
     private function __simpan_produk()
@@ -264,5 +264,68 @@ class Produk_controller extends CI_Controller
             redirect('admin/produk');
         }
     }
-}
+
+    public function ganti_gambar($id_gambar)
+{
+    // Ambil data gambar lama dari database
+    $gambar_lama = $this->produk_gambar_model->get_by_id($id_gambar);
     
+    if ($gambar_lama && !empty($_FILES['gambar_baru']['name'])) {
+        // Konfigurasi upload
+        $config['upload_path'] = './uploads/produk/';
+        $config['allowed_types'] = 'jpg|jpeg|png|gif';
+        $config['max_size'] = 5000;
+        $config['file_name'] = "produk-" . $gambar_lama['id_produk'] . '-' . time();
+        
+        $this->load->library('upload', $config);
+        
+        if ($this->upload->do_upload('gambar_baru')) {
+            $uploadData = $this->upload->data();
+            $nama_file_baru = $uploadData['file_name'];
+            
+            // Hapus file gambar lama
+            $path_lama = './uploads/produk/' . $gambar_lama['nama_gambar'];
+            if (file_exists($path_lama)) {
+                unlink($path_lama);
+            }
+            
+            // Update nama gambar di database
+            $this->db->where('id_gambar', $id_gambar);
+            $this->db->update('produk_gambar', array('nama_gambar' => $nama_file_baru));
+            
+            $this->session->set_flashdata('message', '
+            <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                    <use xlink:href="#check-circle-fill" />
+                </svg>
+                <div>Berhasil mengganti gambar!!</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            ');
+        } else {
+            $this->session->set_flashdata('message', '
+            <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                    <use xlink:href="#exclamation-triangle-fill" />
+                </svg>
+                <div>Gagal mengupload gambar baru!!</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            ');
+        }
+        
+        redirect('admin/produk/ubah/' . $gambar_lama['id_produk']);
+    } else {
+        $this->session->set_flashdata('message', '
+        <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                <use xlink:href="#exclamation-triangle-fill" />
+            </svg>
+            <div>Pilih gambar terlebih dahulu!!</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        ');
+        redirect('admin/produk/ubah/' . $gambar_lama['id_produk']);
+    }
+}
+}    

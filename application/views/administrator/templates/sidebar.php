@@ -50,9 +50,22 @@
               </a>
             </li>
             <li class="nav-item">
+              <a href="<?= base_url('admin/Kota2422500028') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Kota</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="<?= base_url('admin/produk') ?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Produk</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="<?= base_url('admin/pelanggan') ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pelanggan</p>
               </a>
             </li>
           </ul>

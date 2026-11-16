@@ -69,4 +69,22 @@ $route['admin/produk/tambah'] = 'administrator/produk_controller/tambah_produk';
 $route['admin/produk/ubah/(:num)'] = 'administrator/produk_controller/ubah_produk/$1';
 $route['admin/produk/hapus/(:num)'] = 'administrator/produk_controller/hapus_produk/$1';
 $route['admin/produk/hapus_gambar/(:num)'] = 'administrator/produk_controller/hapus_gambar/$1';
+$route['admin/produk/ganti_gambar/(:num)'] = 'administrator/produk_controller/ganti_gambar/$1';
 
+#Pelanggan Latihan UTS
+$route['admin/pelanggan'] = 'administrator/pelanggan1234_controller/index';
+$route['admin/pelanggan/tambah'] = 'administrator/pelanggan1234_controller/tambah_pelanggan';
+$route['admin/pelanggan/hapus/(:num)'] = 'administrator/pelanggan1234_controller/hapus_pelanggan/$1';
+$route['admin/pelanggan/ubah/(:num)'] = 'administrator/pelanggan1234_controller/ubah_pelanggan/$1';
+
+#Kota242250028
+$route['admin/Kota2422500028'] = 'administrator/Kota2422500028_controller/index';
+$route['admin/Kota2422500028/tambah'] = 'administrator/Kota2422500028_controller/tambah_kota';
+$route['admin/Kota2422500028/hapus/(:num)'] = 'administrator/Kota2422500028_controller/hapus_kota/$1';
+$route['admin/Kota2422500028/ubah/(:num)'] = 'administrator/Kota2422500028_controller/ubah_kota/$1';
+
+#pelanggan
+$route['login'] = 'pelanggan_controller/login';
+$route['register'] = 'pelanggan_controller/register';
+$route['logout'] = 'pelanggan_controller/logout';
+$route['profil'] = 'pelanggan_controller/profil';
